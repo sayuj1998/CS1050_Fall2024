@@ -10,7 +10,7 @@ public class LogicalAnd
    {
       double salary;       // Annual salary
       double yearsOnJob;   // Years at current job
-		
+
 		// Create a Scanner object for keyboard input.
       Scanner keyboard = new Scanner(System.in);
 
@@ -19,7 +19,7 @@ public class LogicalAnd
       salary = keyboard.nextDouble();
 
       // Get the number of years at the current job. +
-      System.out.print("Enter the number of years "
+      System.out.print("Enter the number of years
 		                 "at your current job: ");
       yearsOnJob = keyboard.nextDouble();
 
