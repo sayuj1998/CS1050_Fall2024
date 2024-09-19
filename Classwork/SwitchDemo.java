@@ -1,3 +1,5 @@
+package Classwork;
+
 import java.util.Scanner;  // Needed for the Scanner class
 
 /**
@@ -14,8 +16,8 @@ public class SwitchDemo
       // Create a Scanner object to read input.
       Scanner keyboard = new Scanner(System.in);
 
-      // Ask the user to enter A, B, or C.
-      System.out.print("Enter A, B, or C: ");
+      // Ask the user to enter A, B, C, D, or F.
+      System.out.print("Enter A, B, C, D, or F: ");
       input = keyboard.nextLine();
       choice = input.charAt(0);  // Get the first char
       
@@ -31,8 +33,14 @@ public class SwitchDemo
          case 'C':
             System.out.println("You entered C.");
             break;
+         case 'D':
+            System.out.println("You must retake the class.");
+            break;
+         case 'F':
+            System.out.println("You must retake the class");
+            break;
          default:
-            System.out.println("That's not A, B, or C!");
+            System.out.println("That's not A, B, C, D, or F!");
       }
    }
 }

@@ -1,8 +1,4 @@
-/**
- * Calculate the BMI using formula in US units
- * Use will enter weight in pounds and height in inches
- */
-
+package Classwork;//
 // ADD CODE to import Scanner class
 
 import java.util.Scanner;
@@ -21,8 +17,6 @@ public class BodyMassIndex
 		// Create a Scanner object for scanning  input from keyboard
 		Scanner input = new Scanner(System.in);
 
-		// ADD CODE name object variable input
-
 		// Tell the user what the program will do.
 		System.out.println("This program will calculate your " + "body mass index, or BMI.");
 
@@ -40,8 +34,24 @@ public class BodyMassIndex
 		bmi = weight * BMI_US_FACTOR / (height * height);
 
 		// Display the user's BMI.
-		System.out.printf("Your body mass index (BMI) is %.1f", bmi);
+		System.out.printf("Your body mass index (BMI) is %.1f\n", bmi);
 
-
+		if (bmi <= 18.4)
+		{
+			System.out.println("Category: Underweight");
+		}
+		else if (bmi >= 18.5 && bmi <= 24.9)
+		{
+			System.out.println("Category: Normal");
+		}
+		else if (bmi >= 25.0 && bmi <= 39.9)
+		{
+			System.out.println("Category: Overweight");
+		}
+		else
+		{
+			System.out.println("Obese");
+		}
+		input.close();
 	}
 }
