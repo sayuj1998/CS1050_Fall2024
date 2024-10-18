@@ -1,73 +1,69 @@
-package Classwork;
-
 import java.util.Scanner;
 
-public class BodyMassIndex
-{
-	public static void main(String[] args)
-	{
+public class BodyMassIndex {
+    public static void main(String[] args) {
 
-		final int BMI_US_FACTOR = 703; //factor formula in pounds
+        Scanner input = new Scanner(System.in);
 
-		double weight;
-		double height;
-		double bmi;
-		char repeat;
+        System.out.println("This program will calculate your body mass index.");
 
-		Scanner input = new Scanner(System.in);
+        char repeat = 'Y';
+        while (repeat == 'Y') {
+            String name = getString(input, "Enter name: ");
+            double weight = getPositiveNum(input, "Enter weight (lbs): ");
+            double height = getPositiveNum(input, "Enter height (inches): ");
 
-		System.out.println("This program will calculate your body mass index.");		
+            System.out.printf("Name: %s\n", name);
+            double bmi = calculateBMI(weight, height);
+            System.out.printf("Body mass (BMI): %.1f\n", bmi);
+            String category = getCategory(bmi);
+            System.out.println("Category: " + category);
 
-		do
-		{
-			weight = 0;
-			height = 0;
+            repeat = getString(input, "Do you want to enter another? (Y/N)").charAt(0);
+            repeat = Character.toUpperCase(repeat);
 
-			System.out.print("Enter your name: ");
-			String name = input.nextLine();
+        }
+        System.out.println("Thank you");
+    }
 
-			while (weight <= 0 || height <= 0)
-			{
-				System.out.print("Enter your weight, in pounds: ");
-				weight = input.nextDouble();
+    public static double getPositiveNum(Scanner input, String output) {
+        double num = 0;
+        while (num <= 0) {
 
-				System.out.print("Enter your height, in inches: ");
-				height = input.nextDouble();
+            System.out.print(output);
+            num = input.nextDouble();
+            if (num <= 0) {
+                System.out.println("Invalid. Enter positive values.");
+            }
+        }
+        return num;
+    }
 
-				if (weight <= 0 || height <= 0)
-				{
-					System.out.println("Not valid. Please enter valid positive values.");
-				} // end if
-			} // end while loop
+    public static String getString(Scanner input, String output) {
+        System.out.print(output);
+        return input.next();
 
-			System.out.printf("Name: %s\n", name);
+    }
 
-			bmi = weight * BMI_US_FACTOR / (height * height);
-			System.out.printf("Body mass (BMI): %.1f\n", bmi);
+    public static double calculateBMI(double weight, double height) {
+        final int BMI_US_FACTOR = 703;
+        return weight * BMI_US_FACTOR / (height * height);
 
-			if (bmi <= 18.4) {
-				System.out.println("Category: Underweight");
-			} else if (bmi >= 18.5 && bmi <= 24.9) {
-				System.out.println("Category: Normal");
-			} else if (bmi >= 25.0 && bmi <= 39.9) {
-				System.out.println("Category: Overweight");
-			} else {
-				System.out.println("Category: Obese");
-			} // end multiway if
+    }
 
-			System.out.print("Would you like to calculate again? (Y/N): ");
-			repeat = input.next().charAt(0);
+    public static String getCategory(double bmi) {
 
-		} // do while
-		while (Character.toUpperCase(repeat) == 'Y'); // end of do/while loop
+        String category;
 
-		if (Character.toUpperCase(repeat) == 'N')
-		{
-			System.out.println("Thank you!");
-		}
-
-		input.close();
-
-	}
-
+        if (bmi < 18.5) {
+            category = "Underweight";
+        } else if (bmi >= 18.5 && bmi < 25) {
+            category = "Normal";
+        } else if (bmi >= 25.0 && bmi < 30) {
+            category = "Overweight";
+        } else {
+            category = "Obese";
+        }
+        return category;
+    }
 }

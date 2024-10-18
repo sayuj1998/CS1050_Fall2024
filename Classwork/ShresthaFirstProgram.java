@@ -1,4 +1,4 @@
-package CS1050MyAssign;
+package Classwork;
 
 public class ShresthaFirstProgram {
     public static void main(String[] args) {

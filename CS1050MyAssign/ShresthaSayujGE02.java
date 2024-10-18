@@ -1,4 +1,4 @@
-/*
+package CS1050MyAssign;/*
  * Name: Sayuj Shrestha
  * Class: CS1050 (T/TH)
  * Due Date: 09/21/2024

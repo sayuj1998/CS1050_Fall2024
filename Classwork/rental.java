@@ -1,3 +1,5 @@
+package Classwork;
+
 import java.util.Scanner;
 
 public class rental {
@@ -8,7 +10,7 @@ public class rental {
 
         Scanner input = new Scanner(System.in);
 
-        System.out.print("Select rental option 1, 2 or 3: ");
+        System.out.print("Select Classwork.rental option 1, 2 or 3: ");
 
         options = input.nextInt();
 
@@ -28,7 +30,7 @@ public class rental {
         }
         else
         {
-            System.out.println("Invalid rental option. Quitting Program");
+            System.out.println("Invalid Classwork.rental option. Quitting Program");
         }
         input.close();
 

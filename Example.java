@@ -1,93 +1,49 @@
 import java.util.Scanner;
 
-import java.util.Scanner;
+public class Example {
 
-public class BodyMassIndex
-{
-    public static void main(String[] args)
-    {
+        public static void main(String[] args) {
+            int age = 1;
 
-//        final int BMI_US_FACTOR = 703; //factor formula in pounds
-//
-//        double weight;
-//        double height;
-//        double bmi;
-//        char repeat;
-//
-//        Scanner input = new Scanner(System.in);
-//
-//        System.out.println("This program will calculate your body mass index.");
-//
-//        do
-//        {
-//            weight = 0;
-//            height = 0;
-//
-//            System.out.print("Enter your name: ");
-//            String name = input.nextLine();
-//
-//            while (weight <= 0 || height <= 0)
-//            {
-//                System.out.print("Enter your weight, in pounds: ");
-//                weight = input.nextDouble();
-//
-//                System.out.print("Enter your height, in inches: ");
-//                height = input.nextDouble();
-//
-//                if (weight <= 0 || height <= 0)
-//                {
-//                    System.out.println("Not valid. Please enter valid positive values.");
-//                } // end if
-//            } // end while loop
-//
-//            System.out.printf("Name: %s\n", name);
-//
-//            bmi = weight * BMI_US_FACTOR / (height * height);
-//            System.out.printf("Body mass (BMI): %.1f\n", bmi);
-//
-//            if (bmi <= 18.4) {
-//                System.out.println("Category: Underweight");
-//            } else if (bmi >= 18.5 && bmi <= 24.9) {
-//                System.out.println("Category: Normal");
-//            } else if (bmi >= 25.0 && bmi <= 39.9) {
-//                System.out.println("Category: Overweight");
-//            } else {
-//                System.out.println("Category: Obese");
-//            } // end multiway if
-//
-//            System.out.print("Would you like to calculate again? (Y/N): ");
-//            repeat = input.next().charAt(0);
-//
-//        } // do while
-//        while (Character.toUpperCase(repeat) == 'Y'); // end of do/while loop
-//
-//        if (Character.toUpperCase(repeat) == 'N')
-//        {
-//            System.out.println("Thank you!");
-//        }
-//
-//        input.close();
+            for (int i = 0; i < 2; i++) {
+                age = age + 1; // Age increments by 1 for each iteration (total +2)
+            }
 
-        Scanner input = new Scanner(System.in);
-        double weight = getDouble(input, "Enter weight:");
-        double height = getDouble(input, "Enter height:");
+            System.out.println("In main age = " + age); // Outputs the current age
+            singTheSong("Jill", age); // Calls the singTheSong method with age
+            System.out.println("In main age = " + age); // Outputs the current age
 
+            int numCakes = 3;
 
+            while (numCakes >= 3) {
+                numCakes = eatCakeAndIceCream(); // Calls eatCakeAndIceCream, which returns 1
+                System.out.println("While loop, numCakes = " + numCakes); // Outputs numCakes
+                numCakes = numCakes - 1; // Decrements numCakes by 1
+            }
 
-    }
-
-    public static double getDouble(Scanner input,String output) {
-        double num = 0;
-
-        while (num <= 0)
-        {
-
-            System.out.print(output);
-            num = input.nextDouble();
+            singTheSong("Jack", 1); // Calls singTheSong method with age 1
         }
-        return num;
+
+        public static void singTheSong(String name, int age) {
+            while (age > 1) { // Loops while age is greater than 0
+                System.out.println("Happy Birthday"); // Prints "Happy Birthday"
+                age--; // Decreases age by 1
+            }
+            System.out.println("Dear " + name); // Prints the name
+        }
+
+        public static int eatCakeAndIceCream() {
+            System.out.println("Eating cake and ice cream"); // Prints this statement
+            int numCakes = 1; // numCakes is set to 1
+            return numCakes; // Returns numCakes
+        }
     }
 
 
-}
+
+
+
+
+
+
 
