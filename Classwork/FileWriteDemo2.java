@@ -1,3 +1,5 @@
+package Classwork;
+
 import java.util.Scanner;   // Scanner class to read input
 
 //import input/output package classes to write to a file 
@@ -58,4 +60,4 @@ public class FileWriteDemo2 {
     }//end main
 
 
-}//end FileWriteDemo2
+}//end Classwork.FileWriteDemo2
