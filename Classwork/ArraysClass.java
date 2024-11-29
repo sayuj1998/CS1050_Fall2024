@@ -1,4 +1,4 @@
-/*
+package Classwork;/*
  * Arrays Class, Sorting and Searching Searching
  * Explore this code to understand array concepts
  * Add comments to explain the code and help you remember

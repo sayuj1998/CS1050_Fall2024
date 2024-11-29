@@ -1,0 +1,7 @@
+***** CS2040 Final Grades *******
+Instructor Name:Monica Ball mball@msudenver.edu
+
+Stack Exception: 86.74  B
+Binary Beast: 90.49  A
+Heap Memory: 64.45  D
+Try Catch: 88.51  B

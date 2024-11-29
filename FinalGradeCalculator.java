@@ -8,7 +8,7 @@
  * Grading Scale: A: 90-100, B: 80-89, C: 70-79, D: 60-69, F: <60.
  */
 
-import java.util.Scanner;
+import java.util.*;
 
 public class FinalGradeCalculator {
     public static void main(String[] args) {
@@ -18,8 +18,8 @@ public class FinalGradeCalculator {
         String[] categoryNames = {"Class Participation", "Guided Exploration", "Module Quizzes", "Project Iterations", "Final Exam"};
         double[] categoryWeights = {0.12, 0.22, 0.22, 0.22, 0.22};
 
-        double minGrade = 0;
-        double maxGrade = 105;
+        int minGrade = 0;
+        int maxGrade = 105;
 
         displayCourseGrading();
 
@@ -37,11 +37,12 @@ public class FinalGradeCalculator {
             System.out.println("Enter grades for student " + (i +1));
 
             for (int j = 0; j < categoryNames.length; j++) {
-                studentGrades[i][j] = getValidGrade(input, "Enter the " + categoryNames[j] + " grade: ", minGrade, maxGrade);
-            } // end Nested for loop
+                System.out.printf("Enter the %s grade \n", categoryNames[j]);
+                studentGrades[i][j] = getValidGrade(input, minGrade, maxGrade);
+            }
 
             // Calling the method to calculate the final grade
-            double finalGrade = calculateFinalGrade(studentGrades[i], categoryWeights);
+            double finalGrade = calculateClassFinalGrade(studentGrades[i], categoryWeights);
 
             System.out.println("------------------------------");
             System.out.printf("Student %d Final Percentage: %.2f\n", i + 1, finalGrade);
@@ -54,16 +55,16 @@ public class FinalGradeCalculator {
         } // end For loop
 
         // Class average
-        double average = calculateAverage(finalGrades);
+        double average = calculateClassAverage(finalGrades);
 
         // Class min
-        double min = calculateMin(finalGrades);
+        double min = calculateClassMin(finalGrades);
 
         // Class max
-        double max = calculateMax(finalGrades);
+        double max = calculateClassMax(finalGrades);
 
         // Displaying the results
-        System.out.println("***** Class Final Grades *******");
+        System.out.println("****** Class Final Grades ******");
         for (int i = 0; i < numOfStudents; i++) {
             System.out.printf("Student %d: %.2f  %c\n", i + 1, finalGrades[i], determineLetterGrade(finalGrades[i]));
         }
@@ -76,39 +77,40 @@ public class FinalGradeCalculator {
     } // end main
 
     // Takes user input and ensures it's within the valid range
-    public static double getValidGrade(Scanner input, String output, double minGrade, double maxGrade) {
+    public static double getValidGrade(Scanner input, int minGrade, int maxGrade) {
         double grade = -1;
-        while (grade < minGrade || grade > maxGrade)
-        {
-            System.out.print(output);
-            grade = input.nextDouble();
-            if (grade < minGrade || grade > maxGrade) {
-                System.out.println("Enter a value from 0 to 105.");
+        do {
+            try {
+                System.out.printf("Enter a value from %d to %d: \n", minGrade, maxGrade);
+                grade = input.nextDouble();
+            } catch (InputMismatchException ex) {
+                System.out.printf("Error: Enter a value from %d to %d\n", minGrade, maxGrade);
+                input.nextLine();
             }
-        }
+        } while (grade < minGrade || grade > maxGrade); // Ensure valid input within range
         return grade;
-    } // end enterValidGrade
+    } // end getValidGrade
 
     // Method to calculate the final grade
-    public static double calculateFinalGrade(double[] studentGrades, double[] categoryWeights) {
+    public static double calculateClassFinalGrade(double[] studentGrades, double[] categoryWeights) {
         double finalGrade = 0;
         for (int i = 0; i < studentGrades.length; i++) {
             finalGrade += studentGrades[i] * categoryWeights[i];
         }
         return finalGrade;
-    } // end calculateFinalGrade
+    } // end calculateClassFinalGrade
 
     // Method to calculate the class average
-    public static double calculateAverage(double[] finalGrades) {
+    public static double calculateClassAverage(double[] finalGrades) {
         double sum = 0;
         for (int i = 0; i < finalGrades.length; i++) {
             sum += finalGrades[i];
         }
         return sum/finalGrades.length;
-    } // end calculateAverage
+    } // end calculateClassAverage
 
     // Method to calculate the class minimum
-    public static double calculateMin(double[] finalGrades) {
+    public static double calculateClassMin(double[] finalGrades) {
         double min = finalGrades[0];
         for (int i = 1; i < finalGrades.length; i++) {
             if (finalGrades[i] < min) {
@@ -116,10 +118,10 @@ public class FinalGradeCalculator {
             }
         }
         return min;
-    } // end calculateMin
+    } // end calculateClassMin
 
     // Method to calculate the class maximum
-    public static double calculateMax(double[] finalGrades) {
+    public static double calculateClassMax(double[] finalGrades) {
         double max = finalGrades[0];
         for (int i = 1; i < finalGrades.length; i++) {
             if (finalGrades[i] > max) {
@@ -127,7 +129,7 @@ public class FinalGradeCalculator {
             }
         }
         return max;
-    } // end calculateMax
+    } // end calculateClassMax
 
     // Determines the letter grade based on the final grade percentage
     public static char determineLetterGrade(double finalGrade) {
@@ -173,7 +175,6 @@ public class FinalGradeCalculator {
         System.out.println("D: 60 to < 70");
         System.out.println("F: < 60");
         System.out.println();
-        System.out.println("Calculate Student's Grade");
     }// end displayCourseGrading
 
 } // end class

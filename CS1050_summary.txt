@@ -1,0 +1,6 @@
+***** CS1050 Final Grades *******
+Instructor Name:Deb Harding dhard@msudenver.edu
+
+Stack Exception: 88.11  B
+Binary Beast: 95.78  A
+Heap Memory: 73.58  C

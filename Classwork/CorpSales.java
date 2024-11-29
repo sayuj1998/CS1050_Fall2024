@@ -1,5 +1,6 @@
+package Classwork;
+
 import java.util.Scanner;
-import java.text.DecimalFormat;
 
 /**
  * This program demonstrates a two-dimensional array.
