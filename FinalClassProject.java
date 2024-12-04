@@ -1,3 +1,16 @@
+/*
+ * Name: Sayuj Shrestha
+ * Class: CS1050 (T/TH)
+ * Due Date: 12/03/2024
+ * Final Project: Implement Classes
+ *
+ * This program reads course data from a file and calculates final grades for students based on given categories.
+ * Each category has a specific weight.
+ * It assigns letter grades, and calculates the class statistics (average, minimum, maximum).
+ * It outputs the summary and results to a file.
+ * Grading Scale: A: 90-100, B: 80-89, C: 70-79, D: 60-69, F: <60.
+ */
+
 import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,8 +22,8 @@ public class FinalClassProject {
 
         // Array categories and percentage weights for CS1050
         final int TOTAL_CATEGORIES_1050 = 5;
-        String[] categories1050 = { "Class Participation", "Guided Exploration", "Quizzes", "Project Percent", "Final Exam" };
-        double[] percentWeights1050 = { .12, .22, .22, .22, .22 };
+        String[] categories1050 = {"Class Participation", "Guided Exploration", "Quizzes", "Project Percent", "Final Exam"};
+        double[] percentWeights1050 = {.12, .22, .22, .22, .22};
         int MAX_STUDENTS_1050 = 10;
 
         Course course1050 = new Course("CS1050", categories1050, percentWeights1050, MAX_STUDENTS_1050);
@@ -20,7 +33,7 @@ public class FinalClassProject {
             courseSetUp(course1050, TOTAL_CATEGORIES_1050, "course1050.txt");
             System.out.println("\nTotal Students in " + course1050.getCourseName() + ": " + course1050.getNumberStudents());
             course1050.displayCourseGrading();
-            course1050.PostFinalGrades();
+            course1050.postFinalGrades();
             course1050.displayCourseSummary();
             course1050.writeSummaryToFile();
 
@@ -30,8 +43,8 @@ public class FinalClassProject {
 
         // Array categories and percentage weights for CS2040
         final int TOTAL_CATEGORIES_2040 = 4;
-        String[] categories2040 = { "Class Participation", "Homework", "Midterm", "Final Exam" };
-        double[] percentWeights2040 = { .15, .25, .3, .3 };
+        String[] categories2040 = {"Class Participation", "Homework", "Midterm", "Final Exam"};
+        double[] percentWeights2040 = {.15, .25, .3, .3};
         int MAX_STUDENTS_2040 = 4;
 
         Course course2040 = new Course("CS2040", categories2040, percentWeights2040, MAX_STUDENTS_2040);
@@ -41,7 +54,7 @@ public class FinalClassProject {
             courseSetUp(course2040, TOTAL_CATEGORIES_2040, "course2040.txt");
             System.out.println("\nTotal Students in " + course2040.getCourseName() + ": " + course2040.getNumberStudents());
             course2040.displayCourseGrading();
-            course2040.PostFinalGrades();
+            course2040.postFinalGrades();
             course2040.displayCourseSummary();
             course2040.writeSummaryToFile();
 
@@ -51,145 +64,196 @@ public class FinalClassProject {
 
     } // end of main
 
+    // Method to set up the course by reading course information from a file and assigning it
     public static void courseSetUp(Course course, int totalCategories, String fileName) throws FileNotFoundException {
         Scanner fileScanner = new Scanner(new File(fileName));
 
-        // Read and set the instructor
-        if (fileScanner.hasNextLine()) {
-            String[] instructorLine = fileScanner.nextLine().split(" ", 2); // Split into two parts: name and email
-            String instructorName = instructorLine[0] + " " + instructorLine[1].substring(0, instructorLine[1].lastIndexOf(' '));
-            String instructorEmail = instructorLine[1].substring(instructorLine[1].lastIndexOf(' ') + 1);
-            Instructor instructor = new Instructor(instructorName, instructorEmail);
-            course.setInstructor(instructor);
-        }
+        // Set instructor
+        String instructorLine = fileScanner.nextLine().trim();
+        Scanner instructorScanner = new Scanner(instructorLine);
+        String firstName = instructorScanner.next().trim();
+        String lastName = instructorScanner.next().trim();
+        String email = instructorScanner.next().trim();
+        course.setInstructor(new Instructor(firstName, lastName, email));
+        instructorScanner.close();
 
-        // Read students
+        // Add students
         while (fileScanner.hasNextLine()) {
-            String[] studentLine = fileScanner.nextLine().split(" ");
-            String studentName = studentLine[0] + " " + studentLine[1];
-            String studentEmail = studentLine[2];
+            String studentLine = fileScanner.nextLine().trim();
+            Scanner studentScanner = new Scanner(studentLine);
+            String studentFirstName = studentScanner.next().trim();
+            String studentLastName = studentScanner.next().trim();
+            String studentEmail = studentScanner.next().trim();
+
+            // Get grades using a loop
             double[] grades = new double[totalCategories];
             for (int i = 0; i < totalCategories; i++) {
-                grades[i] = Double.parseDouble(studentLine[3 + i]);
+                grades[i] = Double.parseDouble(studentScanner.next().trim());
             }
-            Student student = new Student(studentName, studentEmail, grades);
-            course.addStudent(student);
+
+            // Add student to course
+            course.addStudent(new Student(studentFirstName, studentLastName, studentEmail, grades));
+            studentScanner.close();
         }
+
         fileScanner.close();
-    }
+    }//end of courseSetUp
+}// end of FinalClassProject
 
-} // end of FinalClassProject
+// Base class for Instructor and Student
+class Person {
+    private final String firstName;
+    private final String lastName;
+    private final String email;
 
-class Instructor {
-    private String name;
-    private String email;
-
-    public Instructor(String name, String email) {
-        this.name = name;
+    public Person(String firstName, String lastName, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
     }
 
-    public String getName() {
-        return name;
+    // Getter for firstName
+    public String getFirstName() {
+        return firstName;
     }
 
+    // Getter for lastName
+    public String getLastName() {
+        return lastName;
+    }
+
+    // Getter for email
     public String getEmail() {
         return email;
     }
 
     public String toString() {
-        return name + " " + email;
+        return firstName + " " + lastName + " " + email;
     }
-}
+}//end Person Class
 
-class Student {
-    private String name;
-    private String email;
-    private double[] grades;
+// Instructor class inherits from Person
+class Instructor extends Person {
+    public Instructor(String firstName, String lastName, String email) {
+        super(firstName, lastName, email);
+    }
+}// end Instructor Class
+
+// Student class inherits from Person
+class Student extends Person {
+    private final double[] grades;
     private double finalGrade;
 
-    public Student(String name, String email, double[] grades) {
-        this.name = name;
-        this.email = email;
+    public Student(String firstName, String lastName, String email, double[] grades) {
+        super(firstName, lastName, email);
         this.grades = grades;
     }
 
-    public String getName() {
-        return name;
+    // Getter for grades
+    public double[] getGrades() {
+        return grades;
     }
 
+    // Setter for final grade
+    public void setFinalGrade(double finalGrade) {
+        this.finalGrade = finalGrade;
+    }
+
+    // Getter for final grade
     public double getFinalGrade() {
         return finalGrade;
     }
 
-    public void calculateFinalGrade(double[] weights) {
-        double total = 0;
-        for (int i = 0; i < grades.length; i++) {
-            total += grades[i] * weights[i];
-        }
-        finalGrade = total;
-    }
-
-    public String getLetterGrade() {
-        if (finalGrade >= 90) return "A";
-        if (finalGrade >= 80) return "B";
-        if (finalGrade >= 70) return "C";
-        if (finalGrade >= 60) return "D";
-        return "F";
-    }
-
     public String toString() {
-        return name + ": " + String.format("%.2f", finalGrade) + "  " + getLetterGrade();
+        return getFirstName() + " " + getLastName() + ": " + String.format("%.2f", finalGrade) + "  " + Course.determineLetterGrade(finalGrade);
     }
-}
+}//end Student Class
 
+// Course class represents a course with instructor, students, and categories with weights
 class Course {
-    private String courseName;
+    private final String courseName;
+    private final String[] categories;
+    private final double[] weights;
+    private final Student[] students;
     private Instructor instructor;
-    private Student[] students;
-    private int studentCount = 0;
-    private String[] categories;
-    private double[] weights;
+    private int numberStudents = 0;
 
     public Course(String courseName, String[] categories, double[] weights, int maxStudents) {
         this.courseName = courseName;
         this.categories = categories;
         this.weights = weights;
-        students = new Student[maxStudents];
+        this.students = new Student[maxStudents];
     }
 
+    // Method to add a student to the course, only if there is space available
+    public void addStudent(Student student) {
+        if (numberStudents < students.length) {
+            students[numberStudents++] = student;
+        } else {
+            System.out.println("Course is full. Couldn't add student: " + student.getFirstName() + " " + student.getLastName() + " " + student.getEmail());
+        }
+    }//end addStudent
+
+    // Setter for instructor for the course
     public void setInstructor(Instructor instructor) {
         this.instructor = instructor;
     }
 
+    // Getter for instructor for the course
+    public Instructor getInstructor() {
+        return instructor;
+    }
+
+    // Getter for the course name
     public String getCourseName() {
         return courseName;
     }
 
-    public int getNumberStudents() {
-        return studentCount;
+    // Getter for the number of students enrolled in the course
+    public double getNumberStudents() {
+        return numberStudents;
     }
 
-    public void addStudent(Student student) {
-        if (studentCount < students.length) {
-            students[studentCount++] = student;
+    // Method to calculate the final grade based on category weights for each student
+    public double calculateFinalGrade(Student student) {
+        double[] grades = student.getGrades(); // Get the student's grades
+        double total = 0;
+        for (int i = 0; i < grades.length; i++) {
+            total += grades[i] * weights[i];
+        }
+        return total;
+    }
+
+    // Method to post final grades for each student
+    public void postFinalGrades() {
+        for (int index = 0; index < numberStudents; index++) {
+            double finalGrade = calculateFinalGrade(students[index]);
+            students[index].setFinalGrade(finalGrade);
+        }
+    }//end postFinalGrades
+
+    // Method to determine the letter grade based on the final grade
+    public static char determineLetterGrade(double finalGrade) {
+        char letterGrade;
+        if (finalGrade >= 90) {
+            letterGrade = 'A';
+        } else if (finalGrade < 90 && finalGrade >= 80) {
+            letterGrade = 'B';
+        } else if (finalGrade < 80 && finalGrade >= 70) {
+            letterGrade = 'C';
+        } else if (finalGrade < 70 && finalGrade >= 60) {
+            letterGrade = 'D';
         } else {
-            System.out.println("Course is full. Couldn't add student: " + student.getName());
+            letterGrade = 'F';
         }
+        return letterGrade;
     }
 
-    public void PostFinalGrades() {
-        for (Student student : students) {
-            if (student != null) {
-                student.calculateFinalGrade(weights);
-            }
-        }
-    }
-
+    // Method to display the course grading information
     public void displayCourseGrading() {
         System.out.println("\n**********************************");
-        System.out.println(courseName + " Final Grade Calculator");
-        System.out.println("Instructor Name:" + instructor);
+        System.out.println(getCourseName() + " Final Grade Calculator");
+        System.out.println("Instructor Name:" + getInstructor());
         System.out.println("**********************************");
         System.out.println("------------------------------");
         System.out.println("Category:Percent");
@@ -200,38 +264,99 @@ class Course {
         System.out.println("\n-------------------------------");
         System.out.println("Letter Grade Range");
         System.out.println("-------------------------------");
-        System.out.println("A: 90 to 100\nB: 80 to < 90\nC: 70 to < 80\nD: 60 to < 70\nF: < 60");
-    }
+        System.out.println("A: 90 to 100");
+        System.out.println("B: 80 to < 90");
+        System.out.println("C: 70 to < 80");
+        System.out.println("D: 60 to < 70");
+        System.out.println("F: < 60");
+    }//end displayCourseGrading
 
+    // Method to calculate the average final grade for all students in the course
+    public static double calculateClassAverage(double[] finalGrades) {
+        double sum = 0;
+        for (int i = 0; i < finalGrades.length; i++) {
+            sum += finalGrades[i];
+        }
+        return sum / finalGrades.length;
+    }// end calculateClassAverage
+
+    // Method to calculate the class minimum final grade among all students in the course
+    public static double calculateClassMin(double[] finalGrades) {
+        double min = finalGrades[0];
+        for (int i = 1; i < finalGrades.length; i++) {
+            if (finalGrades[i] < min) {
+                min = finalGrades[i];
+            }
+        }
+        return min;
+    } // end calculateClassMin
+
+    // // Method to calculate the class maximum final grade among all students in the course
+    public static double calculateClassMax(double[] finalGrades) {
+        double max = finalGrades[0];
+        for (int i = 1; i < finalGrades.length; i++) {
+            if (finalGrades[i] > max) {
+                max = finalGrades[i];
+            }
+        }
+        return max;
+    }// end calculateClassMax
+
+    // Method to displays the course summary including instructor's name, student grades, and class statistics
     public void displayCourseSummary() {
-        System.out.println("\n***** " + courseName + " Final Grades *******");
-        System.out.println("Instructor Name:" + instructor + "\n");
-        double total = 0, min = Double.MAX_VALUE, max = Double.MIN_VALUE;
+        System.out.println("\n***** " + getCourseName() + " Final Grades *******");
+        System.out.println("Instructor Name:" + getInstructor() + "\n");
 
-        for (Student student : students) {
-            if (student != null) {
-                System.out.println(student);
-                double grade = student.getFinalGrade();
-                total += grade;
-                min = Math.min(min, grade);
-                max = Math.max(max, grade);
+        // Array to hold final grades of students
+        double[] finalGrades = new double[numberStudents];
+
+        // Loop through students, print their details, and store their final grades
+        for (int i = 0; i < numberStudents; i++) {
+            if (students[i] != null) {
+                System.out.println(students[i]);
+                finalGrades[i] = students[i].getFinalGrade();
             }
         }
 
-        double average = total / studentCount;
-        System.out.printf("\nClass average: %.2f\nClass min: %.2f\nClass max: %.2f\n", average, min, max);
-    }
+        // Calling methods for class statistics
+        double average = calculateClassAverage(finalGrades);
+        double min = calculateClassMin(finalGrades);
+        double max = calculateClassMax(finalGrades);
 
+        System.out.printf("\nClass average: %.2f\n", average);
+        System.out.printf("Class min: %.2f\n", min);
+        System.out.printf("Class max: %.2f\n", max);
+
+    }//end displayCourseSummary
+
+    // Method to write the course summary to a file
     public void writeSummaryToFile() throws FileNotFoundException {
-        PrintWriter writer = new PrintWriter(courseName + "_summary.txt");
-        writer.println("***** " + courseName + " Final Grades *******");
-        writer.println("Instructor Name:" + instructor + "\n");
-        for (Student student : students) {
-            if (student != null) {
-                writer.println(student);
+        PrintWriter writer = new PrintWriter(getCourseName() + "_summary.txt");
+        writer.println(getCourseName() + " Final Grades");
+        writer.println("Instructor Name:" + getInstructor() + "\n");
+
+        // Same code from displayCourseSummary but writing to file instead of system
+        double[] finalGrades = new double[numberStudents];
+
+        for (int i = 0; i < numberStudents; i++) {
+            if (students[i] != null) {
+                writer.println(students[i]);
+                finalGrades[i] = students[i].getFinalGrade();
             }
         }
+
+        double average = calculateClassAverage(finalGrades);
+        double min = calculateClassMin(finalGrades);
+        double max = calculateClassMax(finalGrades);
+
+        writer.printf("\nClass average: %.2f\n", average);
+        writer.printf("Class min: %.2f\n", min);
+        writer.printf("Class max: %.2f\n", max);
+
+        File courseFile = new File(getCourseName() + "_summary.txt");
+        System.out.println("\nFile located at " + courseFile.getAbsolutePath());
+
         writer.close();
-        System.out.println("\nFile located at " + new java.io.File(courseName + "_summary.txt").getAbsolutePath());
-    }
-}
+    }//end writeSummaryToFile
+
+}// end Course class
