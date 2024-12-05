@@ -190,7 +190,8 @@ class Course {
         if (numberStudents < students.length) {
             students[numberStudents++] = student;
         } else {
-            System.out.println("Course is full. Couldn't add student: " + student.getFirstName() + " " + student.getLastName() + " " + student.getEmail());
+            System.out.println("Course is full. Couldn't add student: " +
+                    student.getFirstName() + " " + student.getLastName() + " " + student.getEmail());
         }
     }//end addStudent
 
